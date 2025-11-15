@@ -1,102 +1,72 @@
-# Cookie Config Dump - Estensione Chrome
+# Cookie Config Dump - Chrome Extension
 
-Estensione Chrome per esportare i cookie della sessione corrente in formato JSON compatibile con Playwright. Ideale per automatizzare l'autenticazione nei test end-to-end.
+Chrome extension to export current session cookies in Playwright-compatible JSON format. Perfect for automating authentication in end-to-end tests.
 
-## Caratteristiche
+## Features
 
-- Esporta tutti i cookie della pagina corrente
-- Opzione per includere cookie di tutti i domini
-- Formato JSON compatibile con Playwright
-- Download diretto del file di configurazione
-- Interfaccia semplice e intuitiva
-- Contatore di cookie in tempo reale
+- Export all cookies from the current page
+- Option to include cookies from all domains
+- Playwright-compatible JSON format
+- Direct download of configuration file
+- Simple and intuitive interface
+- Real-time cookie counter
 
-## Installazione
+## Installation
 
-### 1. Clona o scarica il repository
+### 1. Clone or download the repository
 
 ```bash
 git clone <repository-url>
 cd chrome-extension-config-dump
 ```
 
-### 2. Genera le icone
+### 2. Load the extension in Chrome
 
-L'estensione richiede icone PNG nelle dimensioni 16x16, 48x48 e 128x128 pixel.
+1. Open Chrome and go to `chrome://extensions/`
+2. Enable "Developer mode" (toggle in top right)
+3. Click "Load unpacked"
+4. Select the `chrome-extension-config-dump` directory
+5. The extension should now appear in your toolbar
 
-#### Opzione A: Usando Python (consigliato)
+## Usage
 
-```bash
-# Installa Pillow se necessario
-pip install Pillow
+### Exporting cookies
 
-# Genera le icone
-python3 generate_icons.py
-```
+1. Navigate to the website where you want to export cookies
+2. Log in or complete any necessary operations
+3. Click the extension icon in the toolbar
+4. (Optional) Check "Include all domains" to export cookies from all sites
+5. Click "Dump Config"
+6. Save the JSON file when prompted
 
-#### Opzione B: Usando ImageMagick
+The exported file will be named: `cookies_<domain>_<date>.json`
 
-```bash
-cd icons
-convert -background none icon.svg -resize 16x16 icon16.png
-convert -background none icon.svg -resize 48x48 icon48.png
-convert -background none icon.svg -resize 128x128 icon128.png
-```
+### Using cookies with Playwright
 
-#### Opzione C: Manualmente
-
-Crea tre file PNG (16x16, 48x48, 128x128) e salvali nella directory `icons/` con i nomi:
-- `icon16.png`
-- `icon48.png`
-- `icon128.png`
-
-### 3. Carica l'estensione in Chrome
-
-1. Apri Chrome e vai su `chrome://extensions/`
-2. Attiva la "Modalità sviluppatore" (interruttore in alto a destra)
-3. Clicca su "Carica estensione non pacchettizzata"
-4. Seleziona la directory `chrome-extension-config-dump`
-5. L'estensione dovrebbe ora apparire nella barra degli strumenti
-
-## Utilizzo
-
-### Esportare i cookie
-
-1. Naviga al sito web dove vuoi esportare i cookie
-2. Effettua il login o completa le operazioni necessarie
-3. Clicca sull'icona dell'estensione nella barra degli strumenti
-4. (Opzionale) Seleziona "Includi tutti i domini" per esportare cookie da tutti i siti
-5. Clicca su "Dump Config"
-6. Salva il file JSON quando richiesto
-
-Il file esportato avrà un nome nel formato: `cookies_<dominio>_<data>.json`
-
-### Utilizzare i cookie con Playwright
-
-Dopo aver esportato i cookie, puoi utilizzarli nei tuoi test Playwright per bypassare il login:
+After exporting cookies, you can use them in your Playwright tests to bypass login:
 
 ```javascript
 const { chromium } = require('playwright');
 const fs = require('fs');
 
 async function main() {
-  // Carica la configurazione dei cookie
+  // Load cookie configuration
   const cookieConfig = JSON.parse(fs.readFileSync('./cookies_example_com_2025-11-15.json', 'utf8'));
 
-  // Avvia il browser con i cookie pre-caricati
+  // Launch browser with pre-loaded cookies
   const browser = await chromium.launch({ headless: false });
   const context = await browser.newContext({
     storageState: cookieConfig
   });
 
-  // Apri una nuova pagina - l'utente sarà già autenticato!
+  // Open a new page - user will already be authenticated!
   const page = await context.newPage();
   await page.goto('https://example.com/dashboard');
 
-  // L'utente è già loggato, puoi procedere con i test
-  console.log('✓ Autenticazione completata tramite cookie!');
+  // User is already logged in, you can proceed with tests
+  console.log('✓ Authentication completed via cookies!');
 
-  // ... il tuo codice di test ...
+  // ... your test code ...
 
   await browser.close();
 }
@@ -104,7 +74,7 @@ async function main() {
 main();
 ```
 
-Oppure in Python:
+Or in Python:
 
 ```python
 from playwright.sync_api import sync_playwright
@@ -121,9 +91,9 @@ def main():
         page = context.new_page()
         page.goto('https://example.com/dashboard')
 
-        print('✓ Autenticazione completata tramite cookie!')
+        print('✓ Authentication completed via cookies!')
 
-        # ... il tuo codice di test ...
+        # ... your test code ...
 
         browser.close()
 
@@ -131,9 +101,9 @@ if __name__ == '__main__':
     main()
 ```
 
-## Struttura del file esportato
+## Exported file structure
 
-Il file JSON esportato contiene:
+The exported JSON file contains:
 
 ```json
 {
@@ -165,89 +135,92 @@ Il file JSON esportato contiene:
 }
 ```
 
-## Sviluppo
+## Development
 
-### Struttura del progetto
+### Project structure
 
 ```
 chrome-extension-config-dump/
-├── manifest.json         # Configurazione dell'estensione
-├── popup.html           # Interfaccia utente del popup
-├── popup.js             # Logica per l'estrazione dei cookie
-├── popup.css            # Stili dell'interfaccia
-├── generate_icons.py    # Script per generare le icone
-├── icons/               # Directory delle icone
-│   ├── icon.svg        # Icona SVG sorgente
-│   ├── icon16.png      # Icona 16x16
-│   ├── icon48.png      # Icona 48x48
-│   └── icon128.png     # Icona 128x128
-└── README.md           # Questo file
+├── manifest.json         # Extension configuration
+├── popup.html           # Popup UI
+├── popup.js             # Cookie extraction logic
+├── popup.css            # Interface styles
+├── generate_icons.py    # Script to generate icons
+├── icons/               # Icons directory
+│   ├── icon.svg        # Source SVG icon
+│   ├── icon16.png      # 16x16 icon
+│   ├── icon48.png      # 48x48 icon
+│   └── icon128.png     # 128x128 icon
+├── examples/            # Usage examples
+│   ├── playwright-example.js
+│   └── playwright-example.py
+└── README.md           # This file
 ```
 
-### Modificare l'estensione
+### Modifying the extension
 
-1. Modifica i file sorgente
-2. Vai su `chrome://extensions/`
-3. Clicca sul pulsante di ricarica dell'estensione
-4. Testa le modifiche
+1. Edit the source files
+2. Go to `chrome://extensions/`
+3. Click the reload button for the extension
+4. Test your changes
 
-## Sicurezza
+## Security
 
-**⚠️ IMPORTANTE:** I file di cookie esportati contengono informazioni sensibili che permettono di accedere ai tuoi account.
+**⚠️ IMPORTANT:** Exported cookie files contain sensitive information that allows access to your accounts.
 
-- Non condividere mai i file di cookie esportati
-- Non commitarli nei repository Git
-- Eliminali quando non sono più necessari
-- Conservali in modo sicuro
+- Never share exported cookie files
+- Don't commit them to Git repositories
+- Delete them when no longer needed
+- Store them securely
 
-Si consiglia di aggiungere al `.gitignore`:
+It's recommended to add to `.gitignore`:
 
 ```
 cookies_*.json
 ```
 
-## Casi d'uso
+## Use cases
 
-- **Testing automatizzato:** Salta il processo di login nei test E2E
-- **Sviluppo:** Riutilizza sessioni autenticate tra riavvii
-- **Debugging:** Analizza i cookie impostati dalle applicazioni web
-- **Migrazione:** Trasferisci sessioni tra ambienti diversi
+- **Automated testing:** Skip login process in E2E tests
+- **Development:** Reuse authenticated sessions between restarts
+- **Debugging:** Analyze cookies set by web applications
+- **Migration:** Transfer sessions between different environments
 
-## Limitazioni
+## Limitations
 
-- L'estensione può accedere solo ai cookie visibili al browser
-- Alcuni siti potrebbero avere protezioni aggiuntive oltre ai cookie (es. fingerprinting)
-- I cookie con flag `HttpOnly` sono inclusi ma possono avere limitazioni d'uso
-- I cookie scaduti non funzioneranno se ricaricati dopo la scadenza
+- The extension can only access cookies visible to the browser
+- Some sites may have additional protections beyond cookies (e.g., fingerprinting)
+- Cookies with `HttpOnly` flag are included but may have usage limitations
+- Expired cookies won't work if reloaded after expiration
 
-## Risoluzione problemi
+## Troubleshooting
 
-### L'estensione non si carica
+### Extension won't load
 
-- Verifica che tutte le icone PNG siano presenti nella directory `icons/`
-- Controlla la console di Chrome per eventuali errori
-- Assicurati che il file `manifest.json` sia valido
+- Check Chrome console for errors
+- Make sure the `manifest.json` file is valid
+- Ensure all required files are present
 
-### Non vengono esportati cookie
+### No cookies exported
 
-- Verifica di essere sulla pagina corretta
-- Alcuni siti potrebbero non impostare cookie
-- Prova a selezionare "Includi tutti i domini"
+- Verify you're on the correct page
+- Some sites may not set cookies
+- Try checking "Include all domains"
 
-### I cookie non funzionano in Playwright
+### Cookies don't work in Playwright
 
-- Verifica che il file JSON sia valido
-- Assicurati che i cookie non siano scaduti
-- Controlla che il dominio corrisponda
+- Verify the JSON file is valid
+- Make sure cookies haven't expired
+- Check that the domain matches
 
-## Contribuire
+## Contributing
 
-Contributi, issue e feature request sono benvenuti!
+Contributions, issues, and feature requests are welcome!
 
-## Licenza
+## License
 
-MIT License - vedi LICENSE per dettagli
+MIT License - see LICENSE for details
 
-## Autore
+## Author
 
-Creato per semplificare il testing e lo sviluppo con Playwright.
+Created to simplify testing and development with Playwright.
