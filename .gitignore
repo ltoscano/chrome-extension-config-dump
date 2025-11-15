@@ -1,0 +1,31 @@
+# File di cookie esportati (contengono informazioni sensibili!)
+cookies_*.json
+
+# Screenshot di test
+*.png
+!icons/*.png
+
+# Dipendenze Node.js
+node_modules/
+package-lock.json
+
+# Ambiente virtuale Python
+venv/
+env/
+*.pyc
+__pycache__/
+
+# File IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS specifici
+.DS_Store
+Thumbs.db
+
+# Log
+*.log
+npm-debug.log*

@@ -1,0 +1,47 @@
+{
+  "cookies": [
+    {
+      "name": "session_id",
+      "value": "abc123def456ghi789",
+      "domain": ".example.com",
+      "path": "/",
+      "expires": 1735689600,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "auth_token",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+      "domain": "example.com",
+      "path": "/",
+      "expires": 1735689600,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Strict"
+    },
+    {
+      "name": "preferences",
+      "value": "{\"theme\":\"dark\",\"lang\":\"it\"}",
+      "domain": ".example.com",
+      "path": "/",
+      "expires": 1767225600,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "https://example.com",
+      "localStorage": []
+    }
+  ],
+  "metadata": {
+    "exportedAt": "2025-11-15T12:30:00.000Z",
+    "url": "https://example.com/dashboard",
+    "domain": "example.com",
+    "cookieCount": 3,
+    "allDomains": false
+  }
+}

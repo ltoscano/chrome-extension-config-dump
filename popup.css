@@ -1,0 +1,161 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 350px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  color: #333;
+  background: #f5f5f5;
+}
+
+.container {
+  padding: 20px;
+  background: white;
+}
+
+h1 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a73e8;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.description {
+  font-size: 13px;
+  color: #5f6368;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.url-info {
+  background: #f8f9fa;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #e8eaed;
+}
+
+.url-info strong {
+  font-size: 12px;
+  color: #5f6368;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.url-display {
+  font-size: 14px;
+  color: #1a73e8;
+  font-weight: 500;
+  word-break: break-all;
+}
+
+.options {
+  margin-bottom: 16px;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e8eaed;
+}
+
+.options label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #333;
+}
+
+.options input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #1a73e8;
+}
+
+.dump-button {
+  width: 100%;
+  padding: 12px 20px;
+  background: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.dump-button:hover {
+  background: #1557b0;
+}
+
+.dump-button:active {
+  background: #0d47a1;
+}
+
+.dump-button:disabled {
+  background: #dadce0;
+  cursor: not-allowed;
+}
+
+.dump-button svg {
+  flex-shrink: 0;
+}
+
+.status {
+  margin-top: 16px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.5;
+  display: none;
+}
+
+.status:not(:empty) {
+  display: block;
+}
+
+.status.success {
+  background: #e6f4ea;
+  color: #137333;
+  border: 1px solid #c6e1c6;
+}
+
+.status.error {
+  background: #fce8e6;
+  color: #c5221f;
+  border: 1px solid #f5c2c1;
+}
+
+.status.warning {
+  background: #fef7e0;
+  color: #ea8600;
+  border: 1px solid #fce8b2;
+}
+
+.cookie-count {
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: #e8f0fe;
+  color: #1967d2;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  display: none;
+}
+
+.cookie-count:not(:empty) {
+  display: block;
+}

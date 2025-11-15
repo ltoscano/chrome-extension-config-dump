@@ -1,0 +1,22 @@
+{
+  "name": "cookie-config-dump-examples",
+  "version": "1.0.0",
+  "description": "Esempi di utilizzo dei cookie esportati con Playwright",
+  "main": "playwright-example.js",
+  "scripts": {
+    "test": "node playwright-example.js",
+    "install-playwright": "npx playwright install chromium"
+  },
+  "keywords": [
+    "playwright",
+    "cookies",
+    "authentication",
+    "testing",
+    "e2e"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "playwright": "^1.40.0"
+  }
+}
