@@ -1,4 +1,4 @@
-// Elementi DOM
+// DOM elements
 const dumpButton = document.getElementById('dumpButton');
 const statusDiv = document.getElementById('status');
 const currentUrlDiv = document.getElementById('currentUrl');
@@ -7,7 +7,7 @@ const allDomainsCheckbox = document.getElementById('allDomains');
 
 let currentTab = null;
 
-// Inizializzazione: ottiene il tab corrente e mostra l'URL
+// Initialization: get current tab and show URL
 async function init() {
   try {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -17,18 +17,18 @@ async function init() {
       const url = new URL(tab.url);
       currentUrlDiv.textContent = url.hostname;
 
-      // Mostra il numero di cookie disponibili
+      // Show available cookie count
       await updateCookieCount();
     } else {
-      currentUrlDiv.textContent = 'Nessuna pagina valida';
+      currentUrlDiv.textContent = 'No valid page';
     }
   } catch (error) {
-    console.error('Errore durante l\'inizializzazione:', error);
-    currentUrlDiv.textContent = 'Errore nel caricamento';
+    console.error('Error during initialization:', error);
+    currentUrlDiv.textContent = 'Loading error';
   }
 }
 
-// Aggiorna il conteggio dei cookie
+// Update cookie count
 async function updateCookieCount() {
   try {
     const url = new URL(currentTab.url);
@@ -36,14 +36,14 @@ async function updateCookieCount() {
       domain: allDomainsCheckbox.checked ? undefined : url.hostname
     });
 
-    cookieCountDiv.textContent = `${cookies.length} cookie trovati`;
+    cookieCountDiv.textContent = `${cookies.length} cookies found`;
     cookieCountDiv.style.display = 'block';
   } catch (error) {
-    console.error('Errore nel conteggio dei cookie:', error);
+    console.error('Error counting cookies:', error);
   }
 }
 
-// Converte i cookie di Chrome nel formato Playwright
+// Convert Chrome cookies to Playwright format
 function convertCookiesToPlaywrightFormat(cookies, url) {
   return cookies.map(cookie => {
     const playwrightCookie = {
@@ -58,7 +58,7 @@ function convertCookiesToPlaywrightFormat(cookies, url) {
                 cookie.sameSite.charAt(0).toUpperCase() + cookie.sameSite.slice(1)
     };
 
-    // Aggiungi expires solo se il cookie non è di sessione
+    // Add expires only if cookie is not session-only
     if (cookie.expirationDate) {
       playwrightCookie.expires = Math.floor(cookie.expirationDate);
     }
@@ -67,41 +67,41 @@ function convertCookiesToPlaywrightFormat(cookies, url) {
   });
 }
 
-// Funzione principale per il dump dei cookie
+// Main function for cookie dump
 async function dumpCookies() {
   try {
-    // Disabilita il pulsante durante l'operazione
+    // Disable button during operation
     dumpButton.disabled = true;
-    dumpButton.textContent = 'Esportazione in corso...';
+    dumpButton.textContent = 'Exporting...';
     statusDiv.textContent = '';
     statusDiv.className = 'status';
 
     if (!currentTab || !currentTab.url) {
-      throw new Error('Nessun tab attivo trovato');
+      throw new Error('No active tab found');
     }
 
     const url = new URL(currentTab.url);
 
-    // Ottiene tutti i cookie
+    // Get all cookies
     let cookies;
     if (allDomainsCheckbox.checked) {
-      // Ottiene tutti i cookie di tutti i domini
+      // Get all cookies from all domains
       cookies = await chrome.cookies.getAll({});
     } else {
-      // Ottiene solo i cookie del dominio corrente
+      // Get only cookies from current domain
       cookies = await chrome.cookies.getAll({ domain: url.hostname });
     }
 
     if (cookies.length === 0) {
-      statusDiv.textContent = '⚠ Nessun cookie trovato per questo dominio';
+      statusDiv.textContent = '⚠ No cookies found for this domain';
       statusDiv.className = 'status warning';
       return;
     }
 
-    // Converte i cookie nel formato Playwright
+    // Convert cookies to Playwright format
     const playwrightCookies = convertCookiesToPlaywrightFormat(cookies, url.href);
 
-    // Crea l'oggetto di configurazione
+    // Create configuration object
     const config = {
       cookies: playwrightCookies,
       origins: [{
@@ -117,36 +117,36 @@ async function dumpCookies() {
       }
     };
 
-    // Crea il nome del file
+    // Create filename
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-').split('T')[0];
     const domain = url.hostname.replace(/\./g, '_');
     const filename = `cookies_${domain}_${timestamp}.json`;
 
-    // Converte in JSON
+    // Convert to JSON
     const jsonString = JSON.stringify(config, null, 2);
     const blob = new Blob([jsonString], { type: 'application/json' });
     const downloadUrl = URL.createObjectURL(blob);
 
-    // Scarica il file
+    // Download file
     await chrome.downloads.download({
       url: downloadUrl,
       filename: filename,
       saveAs: true
     });
 
-    // Mostra messaggio di successo
-    statusDiv.textContent = `✓ Esportati ${cookies.length} cookie in ${filename}`;
+    // Show success message
+    statusDiv.textContent = `✓ Exported ${cookies.length} cookies to ${filename}`;
     statusDiv.className = 'status success';
 
-    // Pulisce l'URL del blob
+    // Clean up blob URL
     setTimeout(() => URL.revokeObjectURL(downloadUrl), 100);
 
   } catch (error) {
-    console.error('Errore durante il dump dei cookie:', error);
-    statusDiv.textContent = `✗ Errore: ${error.message}`;
+    console.error('Error during cookie dump:', error);
+    statusDiv.textContent = `✗ Error: ${error.message}`;
     statusDiv.className = 'status error';
   } finally {
-    // Riabilita il pulsante
+    // Re-enable button
     dumpButton.disabled = false;
     dumpButton.innerHTML = `
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -163,5 +163,5 @@ async function dumpCookies() {
 dumpButton.addEventListener('click', dumpCookies);
 allDomainsCheckbox.addEventListener('change', updateCookieCount);
 
-// Inizializza quando il popup viene aperto
+// Initialize when popup opens
 init();

@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Cookie Config Dump",
   "version": "1.0.0",
-  "description": "Esporta i cookie della sessione corrente in formato JSON compatibile con Playwright",
+  "description": "Export current session cookies in Playwright-compatible JSON format",
   "permissions": [
     "cookies",
     "activeTab",
