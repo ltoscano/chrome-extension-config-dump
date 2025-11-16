@@ -13,19 +13,34 @@ Chrome extension to export current session cookies in Playwright-compatible JSON
 
 ## Installation
 
-### 1. Clone or download the repository
+### Option 1: Download ZIP (Recommended)
+
+1. Go to the [GitHub repository](https://github.com/ltoscano/chrome-extension-config-dump)
+2. Click the green "Code" button
+3. Select "Download ZIP"
+4. Extract the ZIP file to a folder on your computer
+5. Follow the steps in "Load the extension in Chrome" below
+
+### Option 2: Download from Releases
+
+1. Go to the [Releases page](https://github.com/ltoscano/chrome-extension-config-dump/releases)
+2. Download the latest release ZIP file
+3. Extract the ZIP file to a folder on your computer
+4. Follow the steps in "Load the extension in Chrome" below
+
+### Option 3: Clone with Git
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/ltoscano/chrome-extension-config-dump.git
 cd chrome-extension-config-dump
 ```
 
-### 2. Load the extension in Chrome
+### Load the extension in Chrome
 
 1. Open Chrome and go to `chrome://extensions/`
 2. Enable "Developer mode" (toggle in top right)
 3. Click "Load unpacked"
-4. Select the `chrome-extension-config-dump` directory
+4. Select the folder where you extracted/cloned the extension
 5. The extension should now appear in your toolbar
 
 ## Usage
